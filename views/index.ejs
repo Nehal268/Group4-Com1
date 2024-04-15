@@ -1,5 +1,35 @@
 <!-- Define a function to render each book -->
 <% function renderBook(book) { %>
+  <div class="book-details">
+    
+    <div class="book-details  ">
+    <a href="/single-book/<%= book._id %>">
+      <h4>Title: <%= book.title %></h4></a>
+      <p><strong> Author: </strong> <%=  book.author %></p>
+      <p><strong>Category:</strong> <%=  book.genre %></p>
+    
+    </div>
+    <div>
+      <span>
+      <form
+      class="action-form"
+      method="POST"
+      action="/single-book/<%= book._id %>?_method=DELETE">
+
+      <button type="submit">Delete</button>
+    </form>
+    <br>
+    <form
+        class="action-form"
+        method="GET"
+        action="/single-book/update/<%= book._id %>"
+      >
+        <button type="submit" class="update">Update</button>
+      </form>
+  </span>
+    </div>
+  </div>
+  
 <% } %>
   
 <!DOCTYPE html>
@@ -8,65 +38,43 @@
   <%- include('partials/head.ejs', { title: "Home page" }) %>
 
   <body>
-    <%- include('partials/navbar') %>
+    <%- include('partials/navbar.ejs') %>
 
-    <div class="content">
-      <div class="home">
-        <div class="item-list"><!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="stylesheet" href="styles.css">
-            <title>Book server</title>
-          </head>
-          <body>
-            <div class="root">
-              <header>
-                <div class="container">
-                  <a href="/"><h1>Dashboard</h1></a>
-                  <nav>
-                    <div><span>Group4@gmail.com</span><button>Log out</button></div>
-                  </nav>
-                </div>
-              </header>
-              <div class="pages">
+    <div class="root">
+      <header>
+        <div class="container">
+          <a href="/"><h1>Dashboard</h1></a>
+          <nav>
+            <div><span>Group4@gmail.com</span><button>Log out</button></div>
+          </nav>
+        </div>
+      </header>
+      <div class="body">
+      
                 <div class="home">
-                  <div class="bookArray">
-                    <% books.forEach(book => { %>
-                      <div class="book-details">
-                      <div class="item-preview">
-                      <a href="/single-book/<%= book._id %>">
-                        <h4>Title: <%= book.title %></h4>
-                        <p>Author: <%= book.author %></p>
-                        <p>Genre: <%= book.genre %></p>
-                        <span class="material-symbols-outlined">delete</span>
-                      </a>
-                      </div>
-                    <% }); %>
+                  <div>
+                    <% if (books.length > 0) { %>
+                      <!-- Call the renderBook function for each location -->
+                      <% books.forEach(renderBook); %> <% } else { %>
+                      <p>No books found.</p>
+                      <% } %>
                   </div>
                   <form class="create" action="/addbook" method="POST"> <!-- Adjust action attribute as needed -->
                     <h3>Add a New Book</h3>
                     <label>Title:</label><input type="text" name="title" required />
                     <label>Author:</label><input type="text" name="author" required />
-                    <label>Genre:</label><input type="text" name="genre" required />
+                    <label>Category:</label><input type="text" name="genre" required />
                     <button type="submit">Add Book</button>
                   </form>
                 </div>
               </div>
             </div>
-          </body>
+         
           </html>
-          <% if (books.length > 0) { %>
-            <!-- Call the renderBook function for each book -->
-            <% books.forEach(renderBook); %> 
-          <% } else { %>
-            <p>No books found.</p>
-          <% } %>
-        </div>
-      </div>
+       
+        
     </div>
 
-    <%- include('partials/footer') %>
+    <%- include('partials/footer.ejs') %>
   </body>
 </html>
